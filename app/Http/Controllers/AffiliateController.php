@@ -33,7 +33,26 @@ class AffiliateController extends Controller
         return response()->json(['model' => $model], 201); 
     }
 
-    function delete($id) {
+    function update(Request $request) {
+        $model = Affiliate::find($request->id);
+        $model->name           = ucwords(strtolower($request->name));
+        $model->dni            = $request->dni;
+        $model->sex            = $request->sex;
+        $model->birth_year     = $request->birth_year;
+        $model->birth_place    = ucwords(strtolower($request->birth_place));
+        $model->dni_address    = ucwords(strtolower($request->dni_address));
+        $model->dni_city       = ucwords(strtolower($request->dni_city));
+        $model->phone          = $request->phone;
+        $model->email          = $request->email;
+        $model->estado_civil   = $request->estado_civil;
+        $model->profesion      = $request->profesion;
+        $model->contacto       = $request->contacto;
+        $model->departament_id = $request->departament_id;
+        $model->save();
+        return response()->json(['model' => $model], 201); 
+    }
+
+    function destroy($id) {
         $affiliate = Affiliate::find($id);
         $affiliate->delete();
         return response(null, 200);

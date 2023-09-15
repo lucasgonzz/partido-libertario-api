@@ -52,7 +52,7 @@ class BlogController extends Controller
         $model = Blog::find($id);
         ImageController::deleteModelImages($model);
         $model->delete();
-        $this->sendDeleteModelNotification('Blog', $model->id);
+        // $this->sendDeleteModelNotification('Blog', $model->id);
         return response(null);
     }
 }

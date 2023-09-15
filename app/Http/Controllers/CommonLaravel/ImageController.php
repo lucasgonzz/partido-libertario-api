@@ -18,6 +18,7 @@ class ImageController extends Controller
         $image_url = substr($image_url, 7);
         $image_url = $this->getFullImageUrl($image_url);
         $image_model = $this->setModelProp($request, $image_url);
+        Log::info('image_url: '.$image_url);
         return response()->json(['image_url' => $image_url, 'image_model' => $image_model]);
     }
 
@@ -46,9 +47,11 @@ class ImageController extends Controller
     }
 
     function getFullImageUrl($image_url) {
+        Log::info('aca; '.env('APP_ENV'));
         if (env('APP_ENV') == 'local') {
             $image_url = env('APP_URL').'/storage/'.$image_url;
         } else {
+            Log::info('entrooo');
             $image_url = env('APP_URL').'/public/storage/'.$image_url;
         }
         return $image_url;
@@ -100,9 +103,11 @@ class ImageController extends Controller
     }
 
     static function deleteModelImages($model) {
-        foreach ($model->getAttributes() as $prop => $_prop) {
-            if (substr($prop, 0, 4) == 'foto' || substr($model->{$prop}, 0, 5) == 'image') {
-                Self::deleteImage($model->{$prop});
+        if (!is_null($model)) {
+            foreach ($model->getAttributes() as $prop => $_prop) {
+                if (substr($prop, 0, 4) == 'foto' || substr($model->{$prop}, 0, 5) == 'image') {
+                    Self::deleteImage($model->{$prop});
+                }
             }
         }
     }
